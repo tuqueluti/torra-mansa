@@ -6,6 +6,15 @@ const formulario = document.querySelector("#pedido");
 const cliente = document.querySelector("#cliente");
 const avisoCliente = document.querySelector("#cliente-aviso");
 const produtos = Array.from(formulario.querySelectorAll('[name="produto"]'));
+const catalogo = new Map(produtos.map((produto) => {
+  const item = produto.closest(".item");
+  const preco = item.querySelector("data");
+  return [produto.value, {
+    nome: item.querySelector("strong").textContent,
+    descricao: item.querySelector(".produto-texto > span").textContent.toLocaleLowerCase("pt-BR"),
+    centavos: preco ? Number(preco.value) : null,
+  }];
+}));
 const moagens = Array.from(formulario.querySelectorAll('[name="moagem"]'));
 const horario = document.querySelector("#horario");
 const painelHorario = horario.closest("details");
@@ -18,7 +27,9 @@ const statusMoagem = document.querySelector("#moagem-status");
 const confirmar = document.querySelector("#confirmar");
 const recibo = document.querySelector("#recibo");
 const modeloRecibo = document.querySelector("#modelo-recibo");
-const precoCombo = document.querySelector("#preco-combo").textContent.replace(/\s+/g, " ");
+const moeda = new Intl.NumberFormat("pt-BR", {
+  style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 2,
+});
 
 function ler(chave) {
   try {
@@ -45,19 +56,27 @@ function atual() {
   };
 }
 
+function formatarPreco(centavos) {
+  return moeda.format(centavos / 100).replace(/\s+/g, " ");
+}
+
+function subtotalDosCombos(ids) {
+  return ids.reduce((total, id) => total + (catalogo.get(id).centavos ?? 0), 0);
+}
+
 function mostrarResumo() {
   const selecao = atual();
   const quantidade = selecao.produtos.length;
-  const temCombo = selecao.produtos.includes("combo");
   const temPacote = selecao.produtos.includes("pacote");
+  const subtotal = subtotalDosCombos(selecao.produtos);
 
   previsao.textContent = selecao.horario ? `${selecao.horario} · desejado` : "Escolher horário";
   confirmar.disabled = quantidade === 0;
   resumoItens.textContent = quantidade === 0 ? "Escolha o que vai levar" : `${quantidade} ${quantidade === 1 ? "item" : "itens"}`;
   resumoPreco.hidden = quantidade === 0;
   resumoPreco.textContent = temPacote
-    ? (temCombo ? `Combo ${precoCombo} · pacote a confirmar` : "Preço do pacote a confirmar")
-    : (temCombo ? precoCombo : "");
+    ? (subtotal ? `${formatarPreco(subtotal)} em combos · pacote a confirmar` : "Preço do pacote a confirmar")
+    : (subtotal ? formatarPreco(subtotal) : "");
 }
 
 function limparRecibo() {
@@ -80,18 +99,19 @@ function mostrarRecibo(titulo, mensagem, destino) {
 }
 
 function montarLinkWhatsApp(selecao, nome) {
-  const itens = [];
-  if (selecao.produtos.includes("combo")) {
-    itens.push(`• Combo da Manhã (coado e pão de queijo mineiro) · ${precoCombo}`);
-  }
-  if (selecao.produtos.includes("pacote")) {
-    itens.push(`• Pacote de café · ${descricoesMoagem[selecao.moagem]} · preço a confirmar`);
-  }
+  const itens = selecao.produtos.map((id) => {
+    const item = catalogo.get(id);
+    if (id === "pacote") return `• ${item.nome} · ${descricoesMoagem[selecao.moagem]} · preço a confirmar`;
+    return `• ${item.nome} (${item.descricao}) · ${formatarPreco(item.centavos)}`;
+  });
+  const subtotal = subtotalDosCombos(selecao.produtos);
+  const valores = subtotal ? [`Subtotal dos combos · ${formatarPreco(subtotal)}`, ""] : [];
   const mensagem = [
     `Olá! Aqui é ${nome}. Quero fazer um pedido para retirada na Torra Mansa.`,
     "",
     ...itens,
     "",
+    ...valores,
     `Gostaria de retirar às ${selecao.horario}. Podem confirmar o horário?`,
   ].join("\n");
   return `${whatsappCafeteria}?text=${encodeURIComponent(mensagem)}`;

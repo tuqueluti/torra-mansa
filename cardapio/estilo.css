@@ -1,0 +1,110 @@
+@font-face {
+  font-family: Lato;
+  src: url("../assets/lato-400.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: Lato;
+  src: url("../assets/lato-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --torra: #36221d;
+  --barro: #b45132;
+  --leite: #f1e6d4;
+  --miolo: #d9c9b5;
+  --folha: #526d55;
+  --linha: color-mix(in srgb, var(--torra) 24%, transparent);
+  background: var(--leite);
+  color: var(--torra);
+  font: 1rem/1.5 Lato, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, p { margin: 0; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-underline-offset: 4px; }
+:focus-visible { outline: 2px solid var(--folha); outline-offset: 4px; }
+
+.folha { width: min(1070px, calc(100% - 2 * clamp(20px, 5vw, 72px))); margin: auto; }
+.cabecalho, .rodape { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.cabecalho { padding-block: 23px 15px; border-bottom: 1px solid var(--linha); }
+.marca { width: clamp(132px, 28vw, 205px); }
+.controles { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 14px; }
+.controles a, .controles button, .pedido {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  font-size: .875rem;
+  font-weight: 700;
+}
+.controles button {
+  border: 1px solid var(--linha);
+  background: transparent;
+  padding: 0 12px;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+.controles button:hover { background: var(--miolo); }
+
+.titulo { margin-block: clamp(30px, 6vw, 65px) 23px; }
+h1, h2 { font-family: Lato, sans-serif; font-weight: 700; letter-spacing: -.046em; }
+h1 { font-size: clamp(3.1rem, 9vw, 6.4rem); line-height: 1; color: var(--barro); }
+.titulo p { color: var(--folha); font-size: 1.125rem; font-weight: 700; margin-top: 6px; }
+.composicao { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); align-items: center; gap: clamp(25px, 5vw, 65px); }
+.combos { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--linha); }
+.combos li { padding-block: 18px; border-bottom: 1px solid var(--linha); break-inside: avoid; }
+.combos h2 { font-size: clamp(1.18rem, 2.7vw, 1.75rem); line-height: 1.15; }
+.linha { display: flex; justify-content: space-between; align-items: baseline; gap: 9px; }
+.linha h2 { min-width: 0; }
+.linha data { flex-shrink: 0; font-size: clamp(1.15rem, 2.7vw, 1.65rem); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.combos p { margin-top: 6px; max-width: 43ch; }
+.foto { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: 52% 65%; border-radius: 24% 7% 26% 8% / 25% 8% 23% 9%; }
+.rodape { margin-top: 25px; padding-block: 14px 27px; }
+.rodape p { max-width: 48ch; }
+.pedido { flex-shrink: 0; background: var(--torra); color: var(--leite); padding-inline: 14px; text-decoration: none; }
+.link-impresso { display: none; }
+
+@media (max-width: 690px) {
+  .composicao { grid-template-columns: 1fr; }
+  .foto { aspect-ratio: 1.2; }
+  .rodape { flex-wrap: wrap; }
+}
+@media (max-width: 360px) {
+  .controles { justify-content: flex-end; gap: 0 8px; }
+  .controles a { font-size: .8125rem; }
+}
+
+@page { size: A4; margin: 14mm; }
+@media print {
+  :root { print-color-adjust: exact; background: white; }
+  .folha { width: 100%; }
+  .cabecalho { padding-top: 0; }
+  .marca { width: 52mm; }
+  .controles, .pedido { display: none; }
+  .titulo { margin-block: 11mm 6mm; }
+  h1 { font-size: 58pt; }
+  .composicao { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 8mm; }
+  .combos li { padding-block: 6.5mm; }
+  .combos h2 { font-size: 17pt; }
+  .linha data { font-size: 15pt; }
+  .combos p { font-size: 11pt; }
+  .rodape { display: block; margin-top: 7mm; padding: 3mm 0; border-top: 1px solid var(--linha); }
+  .link-impresso { display: inline; font-size: 10pt; }
+}
+
+
+/* Letras em curvas com título disponível a leitores de tela. */
+.mont-leitura {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.mont-linhas { display: block; }
+.mont-desenho { display: block; height: 1em; width: auto; max-width: 100%; }

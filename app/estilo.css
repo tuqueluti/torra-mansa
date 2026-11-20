@@ -138,9 +138,11 @@ h1 { font-size: clamp(1.5rem, 7vw, 1.95rem); }
 .item input, .opcoes input { position: absolute; inset: 0 auto auto 0; width: 1px; height: 1px; margin: 0; opacity: 0; }
 .produto-foto { width: 66px; height: 66px; object-fit: cover; object-position: center 75%; border-radius: 11px 5px 11px 5px; }
 .produto-foto.cafe { object-position: 67% 84%; }
+.produto-carimbo { display: grid; place-items: center; background: var(--miolo); }
+.produto-carimbo.pastel { background: color-mix(in srgb, var(--leite) 76%, var(--barro)); }
 .produto-texto { display: grid; gap: 1px; font-size: .8125rem; }
 .produto-texto strong { font: 700 1rem/1.15 Lato, sans-serif; letter-spacing: -.025em; }
-.produto-texto b { font-size: .875rem; font-variant-numeric: tabular-nums; }
+.produto-texto b, .produto-texto data { font-size: .875rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .seletor {
   display: grid;
   place-items: center;
