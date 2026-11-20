@@ -192,12 +192,19 @@ h3 { font-size: clamp(1.23rem, 2vw, 1.85rem); line-height: 1.14; letter-spacing:
 .combo {
   margin-top: clamp(26px, 3.4vw, 41px);
   border-block: 1px solid var(--linha);
-  padding-block: 20px 22px;
+  padding-block: 14px;
+  display: grid;
+  grid-template-columns: clamp(51px, 5.4vw, 80px) minmax(0, 1fr);
+  gap: clamp(8px, 1.2vw, 15px);
+  align-items: center;
 }
 .combo + .combo { margin-top: 0; border-top: 0; }
+.combo-foto { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 19% 7% 24% 8%; }
+.combo:first-of-type .combo-foto { object-position: center 78%; }
 .combo-linha { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; }
-.preco { flex: 0 0 auto; font-size: clamp(1.4rem, 2.55vw, 2.25rem); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; letter-spacing: -.04em; }
-.combo-descricao { max-width: 35ch; margin-top: 12px; font-size: 1.0625rem; line-height: 1.5; }
+.combo-linha h3 { min-width: 0; font-size: clamp(1.06rem, 1.8vw, 1.6rem); }
+.preco { flex: 0 0 auto; font-size: clamp(1rem, 2.1vw, 1.72rem); font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; letter-spacing: -.035em; white-space: nowrap; }
+.combo-descricao { max-width: 39ch; margin-top: 6px; font-size: 1rem; line-height: 1.42; }
 .acoes-cardapio { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 18px; margin-top: 24px; }
 .link-cardapio { min-height: 44px; display: inline-flex; align-items: center; font-weight: 700; text-underline-offset: 4px; }
 

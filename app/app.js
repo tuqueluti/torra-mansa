@@ -27,8 +27,9 @@ const statusMoagem = document.querySelector("#moagem-status");
 const confirmar = document.querySelector("#confirmar");
 const recibo = document.querySelector("#recibo");
 const modeloRecibo = document.querySelector("#modelo-recibo");
-const moeda = new Intl.NumberFormat("pt-BR", {
-  style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 2,
+const moeda = new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"});
+const moedaInteira = new Intl.NumberFormat("pt-BR", {
+  style: "currency", currency: "BRL", maximumFractionDigits: 0,
 });
 
 function ler(chave) {
@@ -57,7 +58,8 @@ function atual() {
 }
 
 function formatarPreco(centavos) {
-  return moeda.format(centavos / 100).replace(/\s+/g, " ");
+  const formato = centavos % 100 === 0 ? moedaInteira : moeda;
+  return formato.format(centavos / 100).replace(/\s+/g, " ");
 }
 
 function subtotalDosCombos(ids) {
